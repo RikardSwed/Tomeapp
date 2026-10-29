@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tomtenissens julkalender</title>
+  <meta name="description" content="En julkalender med 24 luckor och brev från Tomtenissen.">
+  <meta name="theme-color" content="#0f1d3d">
+
+  <!-- Hemskärm (iPhone och Android) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Julkalender">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Snö i bakgrunden och snö/konfetti när en lucka öppnas -->
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <div class="app">
+    <header class="top">
+      <div class="hat" id="hat" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="56" height="56">
+          <path d="M10 46 C18 24 30 10 46 12 C40 18 40 30 44 44 Z" fill="#d6312b"/>
+          <path d="M10 46 C18 24 30 10 46 12 C42 16 40 22 40 28 C32 26 20 34 14 46 Z" fill="#b8231f"/>
+          <circle cx="47" cy="12" r="6.5" fill="#fff"/>
+          <rect x="6" y="42" width="44" height="12" rx="6" fill="#fff"/>
+        </svg>
+      </div>
+      <h1 id="title">Tomtenissens<br><span>julkalender</span></h1>
+      <p class="status" id="status" aria-live="polite"></p>
+    </header>
+
+    <main class="grid" id="grid" aria-label="Kalenderluckor"></main>
+
+    <section class="finale" id="finale" hidden>
+      <div class="finale-emoji" aria-hidden="true">🎄</div>
+      <h2>Alla 24 luckor är öppnade!</h2>
+      <p>God jul! Tomtenissen sover nu i sin stuga under granen. Vi ses nästa år!</p>
+    </section>
+
+    <footer class="foot" id="foot">
+      <button class="linkbtn" id="resetBtn" hidden>Nollställ kalendern</button>
+    </footer>
+  </div>
+
+  <!-- Brevet -->
+  <div class="letter-back" id="letterBack" hidden>
+    <article class="letter" id="letter" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+      <div class="letter-head">
+        <span class="badge" id="letterDay">Lucka 1</span>
+        <span class="badge badge-type" id="letterType">Lek</span>
+      </div>
+      <div class="letter-emoji" id="letterEmoji" aria-hidden="true">🎁</div>
+      <h2 id="letterTitle">Titel</h2>
+      <div class="letter-body" id="letterBody"></div>
+      <div class="letter-actions">
+        <button class="btn btn-read" id="readBtn">
+          <span class="ico" aria-hidden="true">🔊</span><span id="readLabel">Läs upp brevet</span>
+        </button>
+        <button class="btn btn-close" id="closeBtn">Stäng</button>
+      </div>
+    </article>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/letters.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

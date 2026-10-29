@@ -1,0 +1,17 @@
+{
+  "name": "Tomtenissens julkalender",
+  "short_name": "Julkalender",
+  "description": "En julkalender med 24 luckor och brev från Tomtenissen.",
+  "lang": "sv",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1631",
+  "theme_color": "#0f1d3d",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
