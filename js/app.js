@@ -92,7 +92,7 @@
     if (opened.size === 24) {
       msg = "God jul! 🎄";
     } else if (testMode) {
-      msg = "Testläge: alla luckor går att öppna";
+      msg = "Alla luckor går att öppna 🔓";
     } else if (upTo === 0) {
       const n = daysUntilDecember();
       msg = n === 1 ? "Imorgon får du öppna första luckan! ✨"
@@ -107,7 +107,6 @@
     statusEl.textContent = msg;
 
     finale.hidden = opened.size < 24;
-    resetBtn.hidden = !testMode;
   }
 
   // ---------- Tryck på en lucka ----------
@@ -406,34 +405,50 @@
     return { burst };
   })();
 
-  // ---------- Föräldraläge ----------
-  // Håll fingret på rubriken i 3 sekunder för att slå på/av testläge
-  // (alla luckor går att öppna). Bra för att prova appen innan december.
-  (function parentMode() {
-    const target = document.querySelector(".top");
-    let timer = null;
-    const start = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        testMode = !testMode;
-        save(KEY_TEST, testMode);
-        refresh();
-        toast(testMode ? "Testläge på: alla luckor går att öppna" : "Testläge av");
-      }, 3000);
-    };
-    const cancel = () => clearTimeout(timer);
-    target.addEventListener("pointerdown", start);
-    ["pointerup", "pointerleave", "pointercancel"].forEach((ev) => target.addEventListener(ev, cancel));
-    target.addEventListener("contextmenu", (e) => e.preventDefault());
-  })();
+  // ---------- Inställningar ----------
+  const settingsBack = $("settingsBack");
+  const anytimeToggle = $("anytimeToggle");
+  let resetArmed = false, resetTimer = null;
 
+  function openSettings() {
+    anytimeToggle.checked = testMode;
+    disarmReset();
+    settingsBack.hidden = false;
+  }
+  function closeSettings() { settingsBack.hidden = true; disarmReset(); }
+
+  $("settingsBtn").addEventListener("click", openSettings);
+  $("settingsDone").addEventListener("click", closeSettings);
+  settingsBack.addEventListener("click", (e) => { if (e.target === settingsBack) closeSettings(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !settingsBack.hidden) closeSettings(); });
+
+  anytimeToggle.addEventListener("change", () => {
+    testMode = anytimeToggle.checked;
+    save(KEY_TEST, testMode);
+    refresh();
+  });
+
+  function disarmReset() {
+    resetArmed = false;
+    clearTimeout(resetTimer);
+    resetBtn.textContent = "Stäng alla luckor igen";
+    resetBtn.classList.remove("armed");
+  }
+
+  // Två tryck behövs, så att ingen nollställer av misstag
   resetBtn.addEventListener("click", () => {
+    if (!resetArmed) {
+      resetArmed = true;
+      resetBtn.textContent = "Tryck igen för att stänga alla";
+      resetBtn.classList.add("armed");
+      resetTimer = setTimeout(disarmReset, 3500);
+      return;
+    }
+    disarmReset();
     opened = new Set();
     save(KEY_OPENED, []);
-    testMode = false;
-    save(KEY_TEST, false);
     refresh();
-    toast("Kalendern är nollställd");
+    toast("Alla luckor är stängda igen");
   });
 
   // Uppdatera när appen öppnas igen (t.ex. nästa morgon)
