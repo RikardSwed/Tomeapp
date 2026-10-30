@@ -417,7 +417,16 @@
   }
   function closeSettings() { settingsBack.hidden = true; disarmReset(); }
 
-  $("settingsBtn").addEventListener("click", openSettings);
+  // Hemlig öppning: 5 tryck direkt efter varandra uppe till höger
+  (function secretTaps() {
+    let taps = 0, last = 0;
+    $("settingsBtn").addEventListener("click", () => {
+      const now = Date.now();
+      taps = now - last < 600 ? taps + 1 : 1;
+      last = now;
+      if (taps >= 5) { taps = 0; openSettings(); }
+    });
+  })();
   $("settingsDone").addEventListener("click", closeSettings);
   settingsBack.addEventListener("click", (e) => { if (e.target === settingsBack) closeSettings(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !settingsBack.hidden) closeSettings(); });
