@@ -1,6 +1,6 @@
 // Sparar appen i telefonen så att den fungerar även utan internet.
 // Byt versionsnumret när du ändrar något, så hämtar telefonerna de nya filerna.
-const CACHE = "tomteapp-v2";
+const CACHE = "tomteapp-v3";
 const FILES = [
   "./",
   "index.html",
